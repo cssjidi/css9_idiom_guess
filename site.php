@@ -21,5 +21,31 @@ class Css9_idiom_guessModuleSite extends WeModuleSite {
 		global $_W,$_GPC;
 		include $this->template('home');
 	}
+	public function doMobileGetIdiom(){
+		global $_W,$_GPC;
+		$response = ihttp_get('http://api.jiongxiao.com/idiom.php?first=1');
+		$res = json_decode($response['content'],true);
+        $reply = $res; 
+        if(strlen($res['msg']) > 12){
+        	$this->doMobileGetIdiom();
+		}
+		/*
+		$reply = array(
+			'code'=>1,
+			'msg'	=>'七七八八'
+		);
+		*/
+		//var_dump($response['content']);
+		die(json_encode($reply));
+	}
 
+}
+
+function tarnsferWords($str){
+	var_dump($str);
+  if(empty($str)){
+    return $str;
+  }
+  $obj = json_decode('{"str":"'.$str.'"}',ture);
+  return $obj['str'];
 }

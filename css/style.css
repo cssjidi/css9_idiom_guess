@@ -1,0 +1,14 @@
+.f-bd {
+
+}
+.f-bd span{
+	padding:5px 10px;
+	border:1px solid #42dfb7;
+	margin:10px;
+	display: inline-block;
+	cursor: pointer;
+}
+.f-hd input{
+	width:30px;
+	height:30px;
+}
