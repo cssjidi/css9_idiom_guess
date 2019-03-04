@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{php echo MODULE_URL;}css/style.css?{TIMESTAMP}">
 
 <div class="f-mn">
-	<div class="f-hd">
+	<div class="f-hd" id="answer">
 		<input type="text" name="a1"/>
 		<input type="text" name="a2"/>
 		<input type="text" name="a3"/>
@@ -18,6 +18,7 @@
 			idiom:'一针见血',
 			total:20,
 			base:20000,
+			answer:'',
 			exceptWord:'丿丆丅乛丩丄丷冖乄乀丨丯丩乁丶乃亽丌丨丬丬乂乊乆亻亅饣乚',
 			random:function (base){
 				var base = base ?  base :　20000
@@ -52,6 +53,7 @@
 				this.getIdiom();
 				this.base = base ? base : this.base;
 				this.total = num;
+
 			},
 			getLimitCode:function (num,base){
 				var idiom = this.spitWord();
@@ -91,14 +93,28 @@
 				})
 			},
 			createHTML: function(){
-				var html = ['<div class="f-bd">']
+				var html = ['<div class="f-bd" id="words">']
 				for (var i = 0;i<this.word.length;i++){
-					html.push('<span>',
+					html.push('<span class="">',
 						this.word[i],
 						'</span>')
 				}
 				html.push('</div>');
 				$('.f-mn').append(html.join(''));
+				this.choiceWord();
+			},
+			choiceWord: function(){
+				var self = this;
+				$('#words').on('click',function(e){
+					var $this = $(e.target);
+					var word = $.trim($this.text());
+					self.answer += word;
+					var splitAnswer = self.answer.split('');
+					$('#answer input').each(function(index){
+						console.log(splitAnswer[index])
+						$(this).val(splitAnswer[index])
+					})
+				})
 			}
 		}
 		cjd.init(20,100);
