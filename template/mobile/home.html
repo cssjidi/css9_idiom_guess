@@ -1,1 +1,106 @@
 {template 'common/header'}
+
+<link rel="stylesheet" type="text/css" href="{php echo MODULE_URL;}css/style.css?{TIMESTAMP}">
+
+<div class="f-mn">
+	<div class="f-hd">
+		<input type="text" name="a1"/>
+		<input type="text" name="a2"/>
+		<input type="text" name="a3"/>
+		<input type="text" name="a4"/>
+	</div>
+</div>
+
+<script type="text/javascript">
+	require(['jquery'],function($){
+		var cjd = {
+			word:[],
+			idiom:'一针见血',
+			total:20,
+			base:20000,
+			exceptWord:'丿丆丅乛丩丄丷冖乄乀丨丯丩乁丶乃亽丌丨丬丬乂乊乆亻亅饣乚',
+			random:function (base){
+				var base = base ?  base :　20000
+				var rangeName = ['\u4e00','\u9fa5'];
+				var firstCode = rangeName[0].charCodeAt(0);
+				var lastCode = rangeName[1].charCodeAt(0);
+				var range = lastCode - firstCode;
+				var randomCode = firstCode + Math.ceil(Math.random()*base);
+				if(randomCode > lastCode || randomCode < firstCode) {
+					this.random();
+				}
+				return this.decodeChar(randomCode);
+			},
+			decodeChar:function (char){
+				var char = Number(char);
+				var prefix = '\\u';
+				char = char.toString(16);
+				var code = prefix.concat(char);
+				return code;
+			},
+			deleteRepeatWord:function(){
+				var word = this.spitWord(this.word);
+				var self = this;
+				for(var i = 0;i < num; i++){
+					var word = unescape(this.random(base).replace(/\\u/g, '%u'))
+					if(this.idiom.indexOf(word) === -1){
+						this.word.push(word);
+					}
+				}
+			},
+			init:function(num,base){
+				this.getIdiom();
+				this.base = base ? base : this.base;
+				this.total = num;
+			},
+			getLimitCode:function (num,base){
+				var idiom = this.spitWord();
+				var self = this;
+				for(var i = 0;i < num; i++){
+					var word = unescape(this.random(base).replace(/\\u/g, '%u'))
+					var checkWord = (function fn(wd,index){
+						if(self.idiom.indexOf(wd) === -1 && self.exceptWord.indexOf(wd) === -1){
+							return wd;
+						}else{
+							var otherWord = unescape(self.random(base).replace(/\\u/g, '%u'));
+							return fn(otherWord,i)
+						}
+					}(word,i))
+					this.word.push(checkWord)
+				}
+				for(var j=0;j < 4;j++){
+					var ran = Math.ceil(Math.random()*num);
+					this.word[ran] = idiom[j];
+				}
+			},
+			spitWord:function(word){
+				return this.idiom.split('');
+			},
+			getIdiom:function(){
+				var self = this;
+				$.ajax({
+					url:'{php echo $this->createMobileUrl("getIdiom") }',
+					type:'get',
+					dataType:'json'
+				}).done(function(idiom){
+					if(idiom.code === 1){
+						self.idiom = idiom.msg;
+						self.getLimitCode(self.total,self.base);
+						self.createHTML();
+					}
+				})
+			},
+			createHTML: function(){
+				var html = ['<div class="f-bd">']
+				for (var i = 0;i<this.word.length;i++){
+					html.push('<span>',
+						this.word[i],
+						'</span>')
+				}
+				html.push('</div>');
+				$('.f-mn').append(html.join(''));
+			}
+		}
+		cjd.init(20,100);
+	});
+</script>
