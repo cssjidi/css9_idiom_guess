@@ -1,0 +1,67 @@
+{template 'common/header'}
+<link rel="stylesheet" type="text/css" href="{php echo MODULE_URL;}/css/style.css"/>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				小狸猜成语设置
+			</div>
+			<div class="panel-body">
+				<div class="form-group" id="setting">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">布局</label>
+					<div class="col-sm-9 col-xs-12" class="active">
+						<div class="radio">
+							<label>
+								<input type="radio" name="layout" {php echo $settings['layout'] == 1 ? 'checked="true"':'';} value="1" />3行3列
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="layout" {php echo $settings['layout'] == 2 ? 'checked="true"':'';} value="2"/>3行4列
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="layout" {php echo $settings['layout'] == 3 ? 'checked="true"':'';} value="3"/>4行3列
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="layout" {php echo $settings['layout'] == 4 ? 'checked="true"':'';} value="4"/>4行4列
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">随机字符数量</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="number" maxlength="5" value="20000" name="charTotal" class="form-control" value="{$settings['charTotal']}" />
+						<div>设置越大，随机的字符就会越多，最小100，最大20,000</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">排除的字符</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="exceptWord" value="丿丆丅乛丩丄丷冖乄乀丨丯丩乁丶乃亽丌丨丬丬乂乊乆亻亅饣乚" class="form-control" value="{$settings['exceptWord']}" />
+						<div>需要排除的字符</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+
+<script language='javascript'>
+	require(['jquery', 'util'], function($, u){
+		$(function(){
+			
+		});
+	});
+</script>
+
+{template 'common/footer'}

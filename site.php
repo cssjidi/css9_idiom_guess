@@ -14,11 +14,32 @@ class Css9_idiom_guessModuleSite extends WeModuleSite {
 	public function __construct() {
 		global $_W;
 		$sql = 'SELECT `settings` FROM ' . tablename('uni_account_modules') . ' WHERE `uniacid` = :uniacid AND `module` = :module';
-		$settings = pdo_fetchcolumn($sql, array(':uniacid' => $_W['uniacid'], ':module' => 'css9_image_recognition'));
+		$settings = pdo_fetchcolumn($sql, array(':uniacid' => $_W['uniacid'], ':module' => 'css9_idiom_guess'));
 		$this->settings = iunserializer($settings);
 	}
 	public function doMobileHome(){
 		global $_W,$_GPC;
+		$total = 9;
+		$layout = $this->settings['layout'];
+		switch ($this->settings['layout']) {
+			case '1':
+				$total = 9;
+				break;
+			case '2':
+				$total = 12;
+				break;
+			case '3':
+				$total = 12;
+				break;
+			case '4':
+				$total = 16;
+				break;
+			default:
+				$total = 9;
+				break;
+		}
+		$exceptWord = $this->settings['exceptWord'];
+		$charTotal = $this->settings['charTotal'];
 		include $this->template('home');
 	}
 	public function doMobileGetIdiom(){

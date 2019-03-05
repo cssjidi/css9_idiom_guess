@@ -8,7 +8,22 @@
 	display: inline-block;
 	cursor: pointer;
 }
+.f-hd{
+	margin-top:20px;
+	text-align: center;
+}
 .f-hd input{
-	width:80px;
-	height:30px;
+	width:35px;
+	height:35px;
+	padding:0px;
+	margin:9px;
+	text-align: center;
+}
+.f-tac{
+	text-align: center;
+}
+.u-gd{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
 }
