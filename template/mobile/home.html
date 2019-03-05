@@ -15,11 +15,11 @@
 	require(['jquery'],function($){
 		var cjd = {
 			word:[],
-			idiom:'一针见血',
-			total:20,
-			base:20000,
+			idiom:'',
+			total:'{$total}',
+			base:'{$charTotal}',
 			answer:'',
-			exceptWord:'丿丆丅乛丩丄丷冖乄乀丨丯丩乁丶乃亽丌丨丬丬乂乊乆亻亅饣乚',
+			exceptWord:'{$exceptWord}',
 			random:function (base){
 				var base = base ?  base :　20000
 				var rangeName = ['\u4e00','\u9fa5'];
@@ -51,9 +51,6 @@
 			},
 			init:function(num,base){
 				this.getIdiom();
-				this.base = base ? base : this.base;
-				this.total = num;
-
 			},
 			getLimitCode:function (num,base){
 				var idiom = this.spitWord();
@@ -93,30 +90,35 @@
 				})
 			},
 			createHTML: function(){
-				var html = ['<div class="f-bd" id="words">']
+				var html = ['<div class="f-bd" id="words"><div class="u-gd" style="{php echo ($layout == 1 ||  $layout == 2) ? 'width:40%':'width:50%'}">']
 				for (var i = 0;i<this.word.length;i++){
 					html.push('<span class="">',
 						this.word[i],
 						'</span>')
 				}
-				html.push('</div>');
+				html.push('</div></div>');
 				$('.f-mn').append(html.join(''));
 				this.choiceWord();
 			},
 			choiceWord: function(){
 				var self = this;
-				$('#words').on('click',function(e){
+				$('#words span').on('click',function(e){
 					var $this = $(e.target);
 					var word = $.trim($this.text());
 					self.answer += word;
 					var splitAnswer = self.answer.split('');
-					$('#answer input').each(function(index){
-						console.log(splitAnswer[index])
-						$(this).val(splitAnswer[index])
-					})
+					console.log(splitAnswer.length);
+					if(splitAnswer.length > 0){
+						if(splitAnswer.length > 4){
+							console.log(self.answer = self.idiom);
+							self.answer = '';
+							return false;
+						}
+						$('#answer input').eq(splitAnswer.length-1).val(splitAnswer[splitAnswer.length-1]);
+					}
 				})
 			}
 		}
-		cjd.init(20,100);
+		cjd.init();
 	});
 </script>
